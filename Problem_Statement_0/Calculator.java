@@ -13,7 +13,10 @@ public class Calculator {
             sc.nextLine();
             System.out.print("Operations are : +, -, *, /, ^, sqrt, ln and enter 'close' to close the calculator. \nEnter the operation: ");
             Operation = sc.nextLine();
-
+            if(!Operation.equals(" +, -, *, /, ^, sqrt, ln, close")){
+                System.out.println("Nautanki karta hai behen ka pakoda..!");
+                break;
+            }
             if(!Operation.equals("ln") && !Operation.equals("sqrt") && !Operation.equals("close")){
                 System.out.print("Enter the next number : ");
                 num2 = sc.nextDouble();
@@ -42,7 +45,7 @@ public class Calculator {
                         System.out.println( num1 + " / " + num2 + " = " + (num1/num2));
                         break;
                     }else{
-                        System.out.println("Can't divide by zero");
+                        System.out.println("Zero se divude khud karke batao ..");
                         break;
                     }
                 

@@ -11,8 +11,7 @@ public class Calculator {
             System.out.print("Enter the number : ");
             Double num1 = sc.nextDouble();
             sc.nextLine();
-
-            System.out.print("Operations are : +, -, *, /, sqrt, ln and enter 'close' to close the calculator. \nEnter the operation: ");
+            System.out.print("Operations are : +, -, *, /, ^, sqrt, ln and enter 'close' to close the calculator. \nEnter the operation: ");
             Operation = sc.nextLine();
 
             if(!Operation.equals("ln") && !Operation.equals("sqrt") && !Operation.equals("close")){
@@ -33,6 +32,10 @@ public class Calculator {
                 case "*":
                 System.out.println( num1 + " * " + num2 + " = " + (num1*num2));
                     break;
+                
+                case "^":
+                System.out.println(num1 +" ^ " + num2 +" = " + Math.pow(num1, num2));
+                break;
 
                 case "/":
                     if(num2 != 0){

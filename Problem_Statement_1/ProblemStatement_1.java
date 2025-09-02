@@ -2,7 +2,7 @@
 
 import java.util.*;
 
-//----------------------------------------------- LEVEL 1 ----------------------------------------------------------------------------------
+//----------------------------------------------------------------- LEVEL 1 ----------------------------------------------------------------------------------
 
 // without using ASCII or inbuilt library : All from scratch
 
@@ -137,7 +137,7 @@ public class ProblemStatement_1{
 
 
 
-    // -------------------------------------------------- LEVEL 2 --------------------------------------------------------
+    // ------------------------------------------------------------------ LEVEL 2 --------------------------------------------------------
 
     // DICTIONARY METHOD
     public static boolean is_frequent(String text){
@@ -177,7 +177,71 @@ public class ProblemStatement_1{
         return shift;
     }
 
-    
+
+    //--------------------------------------------------------------------- LEVEL 3 -------------------------------------------------------------------------------------
+
+    // Convert keyword into shift values
+    public static int[] getShifts(String keyword) {
+        keyword = keyword.toUpperCase();
+        int[] shifts = new int[keyword.length()];
+        for (int i = 0; i < keyword.length(); i++) {
+            shifts[i] = keyword.charAt(i) - 'A'; // A=0 ... Z=25
+        }
+        return shifts;
+    }
+
+    // Encode with Keyword Caesar
+    public static String encodeCaesar(String text, String keyword) {
+        int[] shifts = getShifts(keyword);
+        StringBuilder encoded = new StringBuilder();
+
+        int k = 0;
+        for (char c : text.toCharArray()) {
+            if (Character.isLetter(c)) {
+                boolean isUpper = Character.isUpperCase(c);
+                char base = isUpper ? 'A' : 'a';
+                int shift = shifts[k % shifts.length];
+                char newChar = (char) ((c - base + shift) % 26 + base);
+                encoded.append(newChar);
+                k++;
+            } else {
+                encoded.append(c); // keep spaces/punctuations
+            }
+        }
+        return encoded.toString();
+    }
+
+    // Decode with Keyword Caesar
+    public static String decodeCaesar(String text, String keyword) {
+        int[] shifts = getShifts(keyword);
+        StringBuilder decoded = new StringBuilder();
+
+        int k = 0;
+        for (char c : text.toCharArray()) {
+            if (Character.isLetter(c)) {
+                boolean isUpper = Character.isUpperCase(c);
+                char base = isUpper ? 'A' : 'a';
+                int shift = shifts[k % shifts.length];
+                char newChar = (char) ((c - base - shift + 26) % 26 + base);
+                decoded.append(newChar);
+                k++;
+            } else {
+                decoded.append(c);
+            }
+        }
+        return decoded.toString();
+    }
+
+    // Base64 Encode
+    public static String base64Encode(String text) {
+        return Base64.getEncoder().encodeToString(text.getBytes());
+    }
+
+    // Base64 Decode
+    public static String base64Decode(String base64) {
+        return new String(Base64.getDecoder().decode(base64));
+    }
+
     
     public static void main(String[] args){
         
@@ -195,9 +259,12 @@ public class ProblemStatement_1{
         sc.nextLine();
         Encode(code,shift);
         Decode(code, shift);
-        // ENCODE(code, shift);
-        // DECODE(code, shift);
+        ENCODE(code, shift);
+        DECODE(code, shift);
 
+
+        // ----------------------------------------------------- LEVEL 2 (MAIN CALL) -----------------------------------------------------------------
+        
         System.out.print("Enter the coded word to decode : ");
         String encoded = sc.nextLine();
 
@@ -247,8 +314,27 @@ public class ProblemStatement_1{
                     System.out.println("text " + i + " " + decoded);
                 }
             }
-        }        
+        }
+        
+        // ------------------------------------------------------------- LEVEL 3 (MAIN CALL) ---------------------------------------------------------------
 
+        System.out.print("Enter message: ");
+        String msg = sc.nextLine();
+
+        System.out.print("Enter keyword: ");
+        String keyword = sc.nextLine();
+
+        // Step 1: Caesar Encode
+        String caesarEncoded = encodeCaesar(msg, keyword);
+
+        // Step 2: Base64 Encode
+        String base64Encoded = base64Encode(caesarEncoded);
+        System.out.println("Encoded Message (Keyword + Base64): " + base64Encoded);
+
+        // Step 3: Base64 Decode + Caesar Decode
+        String base64Decoded = base64Decode(base64Encoded);
+        String finalDecoded = decodeCaesar(base64Decoded, keyword);
+        System.out.println("Decoded Message: " + finalDecoded);
 
 
         // closing the scanner to prevent data loss
